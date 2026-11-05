@@ -14,7 +14,11 @@
  * TODOs mark exactly where your work starts.
  */
 
-#define N 25   /* number of lines per file (at least 20 for check-off) */
+/* Number of lines per file. Default 25; override at compile time,
+ * e.g.  gcc -DN=1000 ...  */
+#ifndef N
+#define N 25
+#endif
 
 void write_raw(const char *path) {
     int fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -55,9 +59,18 @@ void write_buffered(const char *path) {
     fclose(fp);
 }
 
-int main(void) {
-    write_raw("raw_output.txt");
-    write_buffered("buffered_output.txt");
+/* Usage:  ./fileio            -> both (Part A)
+ *         ./fileio raw        -> only write_raw      (Part B, separate runs)
+ *         ./fileio buffered   -> only write_buffered (Part B, separate runs) */
+int main(int argc, char *argv[]) {
+    int do_raw = 1, do_buf = 1;
+    if (argc > 1) {
+        do_raw = (strcmp(argv[1], "raw") == 0);
+        do_buf = (strcmp(argv[1], "buffered") == 0);
+    }
+
+    if (do_raw) write_raw("raw_output.txt");
+    if (do_buf) write_buffered("buffered_output.txt");
     printf("done -- check raw_output.txt and buffered_output.txt\n");
     return 0;
 }

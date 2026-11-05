@@ -1,0 +1,4 @@
+write(3, "raw line 0\n", 11)            = 11
+write(3, "buffered line 0\n", 16)       = 16
+write(1, "done -- check raw_output.txt and"..., 53) = 53
++++ exited with 0 +++
