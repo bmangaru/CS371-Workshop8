@@ -31,7 +31,7 @@ int main(void) {
         fprintf(fp, "buffered line %d\n", i);    /* stays in stdio's buffer */
     }
 
-    /* NO fflush(fp), NO fclose(fp), NO close(fd) yet */
+    fflush(fp);   /* THE FIX: push stdio buffer into the kernel NOW */
     printf("PID %d: wrote %d lines to each file, sleeping 3s -- kill -9 me now!\n",
            getpid(), LINES);
     fflush(stdout);   /* only flushes the terminal message, not fp */
